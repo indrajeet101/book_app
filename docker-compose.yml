@@ -18,21 +18,13 @@ services:
       - "3000:3000"
     depends_on:
       - db
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    init: true
-    container_name: pgadmin_cont
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - pgadmin_data:/root/.pgadmin
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
-      - ./pgadmin/config_local.py:/pgadmin4/config_lical.py
+      - redis
+  redis:
     ports:
-      - 50000:80
-    restart: unless-stopped
-    tty: true
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
 volumes:
   pgdata:
-  pgadmin_data:
+  cache:
